@@ -41,6 +41,7 @@ heainctl profile list
 | core releases | `releases list`, `add RELEASE_JSON`, `upload VERSION BINARY`, `fetch VERSION`; `upgrade apply VERSION`, `upgrade rollback`; `rollouts list`, `get`, `create --version V [--kind --app --targets --canary --soak --dry-run]`, `pause / resume / abort / rollback ID` |
 | observation | `audit list [--from --limit]`, `audit verify`, `journal list`, `journal verify`, `metrics list [--since 1h]`, `metrics latest`, `inventory`, `alerts`, `events [--after] [--types alert.*,config.*] [--follow]` |
 | governance | `legal-hold list`, `set TICKET... --reason`, `lift TICKET... --reason`; `duty-profiles list`, `set SLOT FILE`; `governance metrics`, `governance ack KEY`; `breakglass status`, `breakglass ack --comment` |
+| license (Step 5c) | `license show`, `license install LICENSE_JSON` (security-admin; at the root it reaches the whole tree), `license remove` |
 | support | `diagnostics bundle -o FILE`, `logs APP.INSTANCE`, `matrix`, `connectivity`; `provision token LABEL -o FILE` (written 0600) |
 | anything else | `raw METHOD PATH [--data JSON\|@file]` |
 

@@ -202,6 +202,16 @@ func TestAgainstCore(t *testing.T) {
 	if l := core.last(); l.Body != `{"canary":1,"dry_run":true,"targets":["w-1","w-2"],"version":"1.3.2"}` {
 		t.Fatalf("rollout: %+v", l)
 	}
+	lf := filepath.Join(t.TempDir(), "license.json")
+	_ = os.WriteFile(lf, []byte(`{"license":{"id":"L-1"},"signatures":[]}`), 0o644)
+	run(t, a("license", "install", lf)...)
+	if l := core.last(); l.Method != "PUT" || l.Path != "/v1/admin/license" || l.Body != `{"license":{"id":"L-1"},"signatures":[]}` {
+		t.Fatalf("license install: %+v", l)
+	}
+	run(t, a("license", "remove")...)
+	if l := core.last(); l.Method != "DELETE" || l.Path != "/v1/admin/license" {
+		t.Fatalf("license remove: %+v", l)
+	}
 	// remote admin through the Master
 	run(t, a("config", "list", "--node", "w-1")...)
 	if l := core.last(); l.Path != "/v1/admin/nodes/w-1/admin/config" {

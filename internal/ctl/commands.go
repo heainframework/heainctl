@@ -255,6 +255,19 @@ var Commands = []Command{
 		return c.call(http.MethodPost, "/v1/admin/breakglass/ack", c.withOpt(map[string]any{}, "comment"), nil)
 	}},
 
+	// ---- the license (Step 5c) ----
+	{Words: []string{"license", "show"}, Help: "the license state here: licensed, warning, grace, expired or unlicensed; days left; ceilings", Run: get("/v1/admin/license", kv)},
+	{Words: []string{"license", "install"}, Args: []string{"LICENSE_JSON"}, Help: "install a signed license at this node (security-admin; at the root it reaches the whole tree)", Run: func(c *Ctx, a []string) error {
+		f, err := fileJSON(a[0])
+		if err != nil {
+			return err
+		}
+		return c.call(http.MethodPut, "/v1/admin/license", f, kv)
+	}},
+	{Words: []string{"license", "remove"}, Help: "remove the license (security-admin): back to dev mode", Run: func(c *Ctx, _ []string) error {
+		return c.call(http.MethodDelete, "/v1/admin/license", nil, kv)
+	}},
+
 	// ---- diagnostics and provisioning ----
 	{Words: []string{"diagnostics", "bundle"}, Help: "a support bundle (tar.gz) of this node -o FILE", Run: func(c *Ctx, _ []string) error {
 		if c.Opts.S("out") == "" {
